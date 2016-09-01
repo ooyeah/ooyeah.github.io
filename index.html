@@ -235,8 +235,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/09/01/hello-world/" itemprop="url">
-                  Hello World
+                <a class="post-title-link" href="/2016/09/01/多个git账户的ssh key管理/" itemprop="url">
+                  git 多个ssh key如何管理（github,gitlab,oschina等）
                 </a>
               
             
@@ -279,15 +279,30 @@
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+            <p>###问题解决<br>在~/.ssh目录下新建一个config文件配置一下，就可以解决问题</p>
+<blockquote>
+<p>1 生成github 的ssh key</p>
+</blockquote>
+<p>ssh-keygen -t rsa -C “yourmail@gmail.com”<br>在第一个对话的时候写个名字区别，例如id_rsa_github，注意看你当前路径是不是在.ssh/下，否则路径请填绝对路径<br>然后可以两个回车</p>
+<p>记得添加私钥<br>ssh-add ~/.ssh/id_rsa_github</p>
+<blockquote>
+<p>2 生成gitlab 的ssh key</p>
+</blockquote>
+<p>同1，起个gitlab的名字区分开<br>然后两个回车</p>
+<p>记得添加私钥<br>ssh-add ~/.ssh/id_rsa_gitlab</p>
+<blockquote>
+<p>3 在.ssh/下新建一个文本，名字为config</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"># github</div><div class="line">Host github.com</div><div class="line">HostName github.com</div><div class="line">PreferredAuthentications publickey</div><div class="line">IdentityFile ~/.ssh/id_rsa</div><div class="line">User hongxi</div><div class="line"></div><div class="line"># gitlab</div><div class="line">Host git.pintu360.com</div><div class="line">HostName git.pintu360.com</div><div class="line">PreferredAuthentications publickey</div><div class="line">IdentityFile ~/.ssh/id_rsa_gitlab</div><div class="line">User hongxi</div></pre></td></tr></table></figure>
+<blockquote>
+<p>4 在github和gitlab上添加公钥 </p>
+</blockquote>
+<p>这里不用多说</p>
+<blockquote>
+<p>5 测试</p>
+</blockquote>
+<p>ssh -T git@github.com</p>
+<p>成功的话会输出<br><figure class="highlight plain"><figcaption><span>ooyeah! You've successfully authenticated, but GitHub does not provide shell access.```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">ssh -T git@git.pintu360.com</div><div class="line"></div><div class="line">成功的话会输出</div><div class="line">```Welcome to GitLab, hongxi!</div></pre></td></tr></table></figure></p>
 
           
         
